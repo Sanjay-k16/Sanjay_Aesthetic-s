@@ -1,0 +1,298 @@
+/* General Body Styles */
+body {
+    font-family: 'Inter', sans-serif; /* Using Inter font for a modern look */
+    /* --- FURNITURE BACKGROUND START --- */
+    /* Set the background image to your local furniture photo */
+    /* Make sure 'Wooden.jpg' is in the 'images' folder next to your styles.css */
+    background: url('images/Wooden.jpg') no-repeat center center fixed;
+    background-size: cover; /* Ensures the image covers the entire background */
+
+    /* These are crucial for the overlay effect to ensure content readability */
+    position: relative; /* Allows the ::before pseudo-element to be positioned relative to the body */
+    z-index: 0; /* Ensures the body content (text, products) is above the pseudo-element overlay */
+    /* --- FURNITURE BACKGROUND END --- */
+
+    color: #374151; /* Dark gray text color */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* This creates a semi-transparent overlay that blurs the background image */
+/* It sits between the background image and your page content, making text readable */
+body::before {
+    content: ''; /* Required for pseudo-elements */
+    position: absolute; /* Position relative to the body */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Semi-transparent white overlay (adjust rgba(255, 255, 255, 0.7) for more/less brightness) */
+    /*background-color: rgba(255, 255, 255, 0.7); /* This was commented out in your previous code, re-enabled for readability */
+    z-index: -1; /* Place this overlay *behind* the body's actual content */
+}
+
+/* Navigation Bar Styles */
+.navbar {
+    background-color: #1f2937; /* Darker navbar background */
+}
+
+.navbar-brand {
+    font-size: 1.8rem; /* Larger font size for the brand name */
+    font-weight: bold; /* Bold text */
+    color: #f9fafb; /* Light text color for brand */
+}
+
+/* Navigation Links (for Products, About Us, Contact Us) */
+.nav-link {
+    color: #a0aec0; /* Light gray text for links */
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    display: flex; /* Make it a flex container to align icon and text */
+    align-items: center; /* Vertically align icon and text */
+    gap: 0.5rem; /* Space between icon and text */
+}
+
+.nav-link:hover {
+    color: #ffffff; /* White text on hover */
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+}
+
+
+/* Cart Button Styles */
+.btn-warning {
+    background-color: #fcd34d; /* Yellowish background */
+    border-color: #fcd34d; /* Matching border color */
+    color: #1f2937; /* Dark text for contrast */
+    font-weight: bold;
+    display: flex; /* Use flexbox for icon and text alignment */
+    align-items: center;
+    gap: 0.5rem; /* Space between icon and text */
+    border-radius: 0.5rem; /* Rounded corners */
+    padding: 0.75rem 1.25rem; /* Padding inside the button */
+    transition: background-color 0.2s ease-in-out; /* Smooth hover transition */
+}
+
+.btn-warning:hover {
+    background-color: #fbbf24; /* Darker yellow on hover */
+}
+
+/* Section Heading Styles */
+.container h2, .section-container h2 { /* Apply to all main section headings */
+    color: #1f2937; /* Dark text for headings */
+    margin-bottom: 1.5rem; /* Space below heading */
+    font-weight: 700; /* Extra bold text */
+}
+
+/* General styles for the About Us and Contact Us sections */
+.section-container {
+    max-width: 960px; /* Max width for content, similar to Bootstrap's container */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2.5rem; /* Ample padding inside sections */
+    background-color: rgba(255, 255, 255, 0.85); /* Slightly less opaque white background */
+    border-radius: 1rem; /* Rounded corners for the sections */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 2rem; /* Space above each section */
+    margin-bottom: 2rem; /* Space below each section */
+}
+
+/* Product Card Styles */
+.card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions for hover effects */
+    border: none; /* No default border */
+    border-radius: 0.75rem; /* Rounded corners for cards */
+    overflow: hidden; /* Ensures content stays within rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.card:hover {
+    transform: translateY(-0.25rem) scale(1.02); /* Slight lift and zoom on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+}
+
+.card-img-top {
+    height: 200px; /* Fixed height for consistent image size */
+    object-fit: cover; /* Ensures images cover the area without distortion */
+    border-top-left-radius: 0.75rem; /* Match card border radius */
+    border-top-right-radius: 0.75rem; /* Match card border radius */
+}
+
+.card-body {
+    padding: 1.25rem; /* Padding inside the card content area */
+    text-align: center; /* Center align text */
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    font-size: 1.1rem;
+    color: #2563eb; /* Blue color for price */
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Add to Cart / Login Button Styles (using btn-primary) */
+.btn-primary {
+    background-color: #2563eb; /* Blue background */
+    border-color: #2563eb; /* Matching border color */
+    color: #ffffff; /* White text */
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    transition: background-color 0.2s ease-in-out;
+    display: flex; /* For icons */
+    align-items: center; /* For icons */
+    justify-content: center; /* For icons */
+    gap: 0.5rem; /* For icons */
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8; /* Darker blue on hover */
+    border-color: #1d4ed8;
+}
+
+/* Modal Overlay Styles (for Cart and Login) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stays in place when scrolling */
+    z-index: 1000; /* Ensures it's on top of other content */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6); /* Semi-transparent black overlay */
+    display: flex; /* Use flexbox to center the modal content */
+    justify-content: center;
+    align-items: center;
+    padding: 1.25rem;
+}
+
+/* Modal Content Box Styles (for Cart and Login) */
+.modal-content {
+    background: linear-gradient(135deg, #ffffff, #f9fafb); /* Subtle gradient background */
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content h3 {
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+    font-weight: 700;
+}
+
+/* Cart Items List Styles */
+#cart-items {
+    list-style: none;
+    padding: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    padding: 0.75rem;
+}
+
+#cart-items li {
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed #e5e7eb;
+    color: #4b5563;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#cart-items li:last-child {
+    border-bottom: none;
+}
+
+/* Checkout Button Styles */
+.btn-success {
+    background-color: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-success:hover {
+    background-color: #059669;
+    border-color: #059669;
+}
+
+/* Close Modal / Cancel Button Styles */
+.btn-secondary {
+    background-color: #6b7280;
+    border-color: #6b7280;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-secondary:hover {
+    background-color: #4b5563;
+    border-color: #4b5563;
+}
+
+/* Custom Message Box Styles */
+#custom-message-box {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fcd34d; /* Changed to yellow for visibility as per your previous code */
+    color: black; /* Changed to black for better contrast on yellow */
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    /* Hide the About Us/Contact links on small screens to save space */
+    .navbar .flex-grow {
+        display: none;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .card {
+        margin: 0.5rem 0;
+    }
+}

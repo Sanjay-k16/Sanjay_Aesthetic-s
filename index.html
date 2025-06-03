@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjay's Aesthetic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="images/icon2.jfif" type="image/png">
+</head>
+<body class="font-sans antialiased text-gray-800 bg-gray-100">
+
+    <div id="custom-message-box" class="fixed top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300 ease-in-out">
+        <span id="custom-message-text"></span>
+    </div>
+
+    <nav class="navbar bg-gray-900 p-4 flex justify-between items-center">
+        <a class="navbar-brand text-white text-2xl font-bold md:mx-0" href="#">Sanjay's Aesthetic</a>
+        <div class="hidden md:flex flex-grow justify-center space-x-6">
+            <a href="#product-list-section" class="nav-link">
+                <i class="fas fa-boxes"></i> Products
+            </a>
+            <a href="#about-us-section" class="nav-link">
+                <i class="fas fa-info-circle"></i> About Us
+            </a>
+            <a href="#contact-section" class="nav-link">
+                <i class="fas fa-headset"></i> Contact Us
+            </a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="btn-primary flex items-center space-x-2 px-4 py-2 rounded-lg" onclick="showLogin()">
+                <i class="fas fa-user-circle"></i>
+                <span>Login</span>
+            </button>
+            <button class="btn-warning flex items-center space-x-2 px-4 py-2 rounded-lg" onclick="showCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart (<span id="cart-count">0</span>)</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="product-list-section" class="container mx-auto mt-8 px-4 py-10">
+        <h2 class="text-center text-3xl font-bold mb-6 flex items-center justify-center space-x-3">
+            <i class="fas fa-gem text-blue-600"></i>
+            <span>Home Interior</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="product-list">
+            </div>
+    </div>
+
+    <section id="about-us-section" class="section-container bg-white bg-opacity-80 mx-auto px-4 py-10 my-8 shadow-lg rounded-lg">
+        <h2 class="text-center text-3xl font-bold mb-6 flex items-center justify-center space-x-3">
+            <i class="fas fa-info-circle text-purple-600"></i>
+            <span>About Us</span>
+        </h2>
+        <p class="text-lg leading-relaxed text-center mb-4">
+            Welcome to **Sanjay's Aesthetic**, your premier destination for high-quality and stylish furniture.
+            We believe that your living space should be a reflection of your personality and a sanctuary for comfort.
+        </p>
+        <p class="text-lg leading-relaxed text-center">
+            Our mission is to bring you a curated selection of modern, elegant, and durable furniture pieces
+            that transform your house into a home. We are committed to exceptional customer service and
+            ensuring every piece meets our high standards of aesthetic and quality.
+        </p>
+        <p class="text-lg leading-relaxed text-center mt-4">
+            Founded with a passion for beautiful interiors, we strive to make luxurious and unique designs
+            accessible to everyone. Explore our collections and discover the perfect additions to your space!
+        </p>
+    </section>
+
+    <section id="contact-section" class="section-container bg-white bg-opacity-80 mx-auto px-4 py-10 my-8 shadow-lg rounded-lg">
+        <h2 class="text-center text-3xl font-bold mb-6 flex items-center justify-center space-x-3">
+            <i class="fas fa-envelope-open-text text-green-600"></i>
+            <span>Contact Us</span>
+        </h2>
+        <div class="text-center text-lg">
+            <p class="mb-3">Have questions or need assistance? We're here to help!</p>
+            <p class="mb-2"><i class="fas fa-phone-alt mr-2 text-blue-500"></i> Phone: +91 6382790402</p>
+            <p class="mb-2"><i class="fas fa-envelope mr-2 text-red-500"></i> Email: info@sanjayaesthetic.com</p>
+            <p class="mb-2"><i class="fas fa-map-marker-alt mr-2 text-purple-500"></i> Address: 123 Aesthetic Street, Chennai, Tamil Nadu, India</p>
+            <p class="mt-4 text-gray-600">Our customer service team is available Monday - Friday, 9 AM - 6 PM IST.</p>
+        </div>
+        <form class="mt-8 max-w-lg mx-auto space-y-4">
+            <input type="text" placeholder="Your Name" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="email" placeholder="Your Email" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <textarea placeholder="Your Message" rows="5" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <button type="submit" class="btn-primary w-full px-5 py-2 rounded-lg">Send Message</button>
+        </form>
+    </section>
+
+
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold mb-4">Your Cart</h3>
+            <ul id="cart-items" class="mb-4">
+                </ul>
+            <p id="cart-total" class="text-xl font-bold text-right mb-4">Total: $0.00</p>
+            <div class="flex flex-col space-y-3">
+                <button class="btn-success px-5 py-2 rounded-lg" onclick="checkout()">Checkout</button>
+                <button class="btn-secondary px-5 py-2 rounded-lg" onclick="closeCart()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold mb-4">Login to Your Account</h3>
+            <form class="flex flex-col space-y-4">
+                <input type="text" placeholder="Username" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" placeholder="Password" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" class="btn-primary px-5 py-2 rounded-lg">Login</button>
+                <button type="button" class="btn-secondary px-5 py-2 rounded-lg" onclick="closeLogin()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
