@@ -282,6 +282,13 @@ function handleContactSubmit(event) {
         user_product_ID : productId,
         user_message: message
     })
+     gtag('event' , 'add_to_cart' , {
+        user_name: name,
+        user_email: email,
+        user_age : age,
+        user_product_ID : productId,
+        user_message: message
+    })
 
     console.log('contactform_event sent successfully')
 
