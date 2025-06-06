@@ -46,21 +46,21 @@ document.addEventListener("DOMContentLoaded", function() {
     // Ensure the image files (e.g., sofa.jpg) are actually in the 'images' subfolder
     // and that their file extensions match exactly (.jpg, .png, etc.)
     const products = [
-        { id: 1, name: "Luxury Sofa Set", price: 500, img: "images/luxury_sofa.jfif" },
-        { id: 2, name: "Modern Dining Table", price: 300, img: "images/modern_dining.jfif" },
-        { id: 3, name: "Elegant Ceiling Lights", price: 120, img: "images/lights.jfif" },
-        { id: 4, name: "Cozy Armchair", price: 250, img: "images/chairs.jfif" },
-        { id: 5, name: "Minimalist Bookshelf", price: 180, img: "images/bookshelf.jfif" },
-        { id: 6, name: "Modern Coffee Table", price: 150, img: "images/coffeetable.jfif" },
-        { id: 7, name: "Accent Lamp", price: 75, img: "images/lamp.jfif" },
-        { id: 8, name: "Abstract Wall Art", price: 90, img: "images/art.jfif" },
-        { id: 9, name: "Bedroom Dresser", price: 320, img: "images/dresser.avif" },
-        { id: 10, name: "Plush Area Rug", price: 110, img: "images/rug.jfif" },
-        { id: 11, name: "Vintage Console Table", price: 280, img: "images/vintagetable.jfif" },
-        { id: 12, name: "Pendant Lights (Set of 3)", price: 180, img: "images/lightsets3.jfif" },
-        { id: 13, name: "Scandinavian Dining Chairs (Pair)", price: 200, img: "images/chairsets.jfif" },
-        { id: 14, name: "Geometric Floor Lamp", price: 95, img: "images/floorlamp.jfif" },
-        { id: 15, name: "Velvet Storage Bench", price: 160, img: "images/bench.jfif" }
+        { id: 'PROD001', name: "Luxury Sofa Set", price: 500, img: "images/luxury_sofa.jfif" },
+        { id: 'PROD002', name: "Modern Dining Table", price: 300, img: "images/modern_dining.jfif" },
+        { id: 'PROD003', name: "Elegant Ceiling Lights", price: 120, img: "images/lights.jfif" },
+        { id: 'PROD004', name: "Cozy Armchair", price: 250, img: "images/chairs.jfif" },
+        { id: 'PROD005', name: "Minimalist Bookshelf", price: 180, img: "images/bookshelf.jfif" },
+        { id: 'PROD006', name: "Modern Coffee Table", price: 150, img: "images/coffeetable.jfif" },
+        { id: 'PROD007', name: "Accent Lamp", price: 75, img: "images/lamp.jfif" },
+        { id: 'PROD008', name: "Abstract Wall Art", price: 90, img: "images/art.jfif" },
+        { id: 'PROD009', name: "Bedroom Dresser", price: 320, img: "images/dresser.avif" },
+        { id: 'PROD010', name: "Plush Area Rug", price: 110, img: "images/rug.jfif" },
+        { id: 'PROD011', name: "Vintage Console Table", price: 280, img: "images/vintagetable.jfif" },
+        { id: 'PROD012', name: "Pendant Lights (Set of 3)", price: 180, img: "images/lightsets3.jfif" },
+        { id: 'PROD013', name: "Scandinavian Dining Chairs (Pair)", price: 200, img: "images/chairsets.jfif" },
+        { id: 'PROD014', name: "Geometric Floor Lamp", price: 95, img: "images/floorlamp.jfif" },
+        { id: 'PROD015', name: "Velvet Storage Bench", price: 160, img: "images/bench.jfif" }
     ];
 
     // Get the container where products will be displayed
@@ -74,7 +74,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     <img src="${product.img}" class="card-img-top w-full" alt="${product.name}" onerror="this.onerror=null;this.src='https://placehold.co/200x200/cccccc/333333?text=Image+Error';">
                     <div class="card-body p-5">
                         <h5 class="card-title text-xl font-semibold mb-2">${product.name}</h5>
-                        <p class="card-text text-blue-600 text-lg font-bold mb-4">$${product.price.toFixed(2)}</p> <button class="btn-primary px-5 py-2 rounded-lg" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">
+                        <p class="card-text text-blue-600 text-lg font-bold mb-4">$${product.price.toFixed(2)}</p>
+                        <button class="btn-primary px-5 py-2 rounded-lg" onclick="handleAddToCartClick('${product.id}', '${product.name}', ${product.price})">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                     </div>
@@ -86,25 +87,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // --- Cart Functions ---
 
+// NEW: Wrapper function for the onclick event in HTML
+function handleAddToCartClick(id, name, price) {
+    const product = { id: id, name: name, price: price }; // Recreate product object
+    addToCart(product); // Add to local cart
+    sendAddToCartToGTM(product, 1); // Send to GTM (quantity 1 for single add)
+}
+
+
 /**
  * Adds a selected product to the shopping cart.
  * If the item is already in the cart, it increments the quantity.
- * @param {number} id - The unique ID of the product.
- * @param {string} name - The name of the product.
- * @param {number} price - The price of the product (as a number).
+ * @param {object} product - The product object { id, name, price, img }.
  */
-function addToCart(id, name, price) {
+function addToCart(product) {
     // Check if the item already exists in the cart
-    const existingItemIndex = cart.findIndex(item => item.id === id);
+    const existingItemIndex = cart.findIndex(item => item.id === product.id);
 
     if (existingItemIndex > -1) {
         // Item exists, increment quantity
         cart[existingItemIndex].quantity++;
-        showMessage(`Added another ${name} to your cart!`);
+        showMessage(`Added another ${product.name} to your cart!`);
     } else {
         // Item does not exist, add new item with quantity 1
-        cart.push({ id, name, price, quantity: 1 });
-        showMessage(`${name} has been added to your cart!`);
+        cart.push({ ...product, quantity: 1 });
+        showMessage(`${product.name} has been added to your cart!`);
     }
 
     updateCartCount(); // Update the cart count in the navbar
@@ -187,6 +194,9 @@ function checkout() {
         showMessage("Your cart is empty. Please add items before checking out.");
         return; // Stop the function if cart is empty
     }
+    // Optional: send 'begin_checkout' or 'purchase' event here
+    // sendCheckoutEventToGTM(cart); // Assuming you'd create this function
+
     showMessage("Thank you for your purchase! Your order has been placed."); // Show thank you message
     cart = []; // Clear all items from the cart array
     updateCartCount(); // Reset the cart count to 0
@@ -219,6 +229,39 @@ window.onclick = function(event) {
         closeLogin();
     }
 }
+
+// --- NEW FUNCTION: Send Add to Cart data to Google Tag Manager ---
+/**
+ * Pushes an 'add_to_cart' event to the GTM Data Layer with product details.
+ * @param {object} product - The product object { id, name, price }.
+ * @param {number} quantity - The quantity of the product added (usually 1 for this event).
+ */
+function sendAddToCartToGTM(product, quantity) {
+    window.dataLayer = window.dataLayer || []; // Ensure dataLayer exists
+
+    dataLayer.push({
+        'event': 'add_to_cart', // Custom event name for GTM Trigger
+        'ecommerce': {
+            'items': [{
+                'item_id': String(product.id), // Ensure item_id is a string as per GA4 spec
+                'item_name': product.name,
+                'currency': 'USD', // IMPORTANT: Use 'INR' for Indian Rupees, 'USD' for Dollars based on your site's price display
+                'price': product.price,
+                'quantity': quantity
+                // You can add other parameters here if available in your product object:
+                // 'item_brand': 'YourBrand',
+                // 'item_category': 'Furniture',
+                // 'item_variant': 'Blue',
+            }],
+            // Optional: Include overall value and currency for the event if applicable
+            'value': product.price * quantity,
+            'currency': 'USD' // Match the currency with 'items'
+        }
+    });
+
+    console.log('DataLayer push for add_to_cart:', dataLayer); // For debugging in browser console
+}
+
 
 // Global variables for Firebase (these are typically provided by the Canvas environment
 // and are included here for completeness, though not not used in this specific e-commerce logic).
