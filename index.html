@@ -90,12 +90,30 @@
             <p class="mt-4 text-gray-600">Our customer service team is available Monday - Friday, 9 AM - 6 PM IST.</p>
         </div>
         <form class="mt-8 max-w-lg mx-auto space-y-4">
-            <input type="text" placeholder="Your Name" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <input type="email" placeholder="Your Email" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <textarea placeholder="Your Message" rows="5" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-            <button type="submit" class="btn-primary w-full px-5 py-2 rounded-lg">Send Message</button>
+            <div>
+                <label for="contact-name" class="sr-only">Your Name</label>
+                <input type="text" id="contact-name" placeholder="Your Name" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="contact-email" class="sr-only">Your Email</label>
+                <input type="email" id="contact-email" placeholder="Your Email" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="contact-age" class="block text-sm font-medium text-gray-700">Your Age (optional)</label>
+                <input type="number" id="contact-age" placeholder="e.g., 30" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1">
+            </div>
+            <div>
+                <label for="contact-product-id" class="block text-sm font-medium text-gray-700">Product ID (optional, if related to a specific product)</label>
+                <input type="number" id="contact-product-id" placeholder="e.g., 101" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1">
+            </div>
+            <div>
+                <label for="contact-message" class="sr-only">Your Message</label>
+                <textarea id="contact-message" placeholder="Your Message" rows="5" class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full px-5 py-2 rounded-lg" onclick="handleContactSubmit(event)">Send Message</button>
         </form>
     </section>
+
 
     <div id="cart-modal" class="modal hidden">
         <div class="modal-content">
