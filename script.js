@@ -9,6 +9,17 @@ const messageText = document.getElementById("custom-message-text");
 const cartModal = document.getElementById("cart-modal");
 const loginModal = document.getElementById("login-modal"); // Keep login modal reference if it's still in HTML
 
+// code for form submission
+// let Nameval = document.getElementById('contact-name')
+// let email = document.getElementById('contact-email')
+// let age = document.getElementById('contact-age')
+// let productid = document.getElementById('contact-product-id')
+// let message = document.getElementById('contact-message')
+
+// document.getElementById('contactform').addEventListener('submit' , (e)=>{
+//     e.preventDefault()
+//     console.log(Nameval.value , email.value , age.value , productid.value , message.value)
+// })
 // --- Helper Function: Show Custom Message (Notification) ---
 /**
  * Displays a temporary message at the top of the screen.
@@ -263,6 +274,16 @@ function handleContactSubmit(event) {
     console.log("Age:", age || 'Not provided'); // Display "Not provided" if age is NaN or empty
     console.log("Product ID:", productId || 'Not provided');
     console.log("Message:", message);
+
+    gtag('event' , 'contactform_event' , {
+        user_name: name,
+        user_email: email,
+        user_age : age,
+        user_product_ID : productId,
+        user_message: message
+    })
+
+    console.log('contactform_event sent successfully')
 
     // Push data to Google Tag Manager's Data Layer
     window.dataLayer = window.dataLayer || [];
