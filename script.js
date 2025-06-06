@@ -7,7 +7,7 @@ const messageText = document.getElementById("custom-message-text");
 
 // Get references to the modal elements
 const cartModal = document.getElementById("cart-modal");
-const loginModal = document.getElementById("login-modal");
+const loginModal = document.getElementById("login-modal"); // Keep login modal reference if it's still in HTML
 
 // --- Helper Function: Show Custom Message (Notification) ---
 /**
@@ -43,24 +43,23 @@ function showMessage(message, duration = 3000) {
 document.addEventListener("DOMContentLoaded", function() {
     // --- Product Data: A list of all available products with details and image URLs ---
     // IMPORTANT: Prices are now numbers for calculation!
-    // Ensure the image files (e.g., sofa.jpg) are actually in the 'images' subfolder
-    // and that their file extensions match exactly (.jpg, .png, etc.)
+    // IDs are now numeric as requested
     const products = [
-        { id: 'PROD001', name: "Luxury Sofa Set", price: 500, img: "images/luxury_sofa.jfif" },
-        { id: 'PROD002', name: "Modern Dining Table", price: 300, img: "images/modern_dining.jfif" },
-        { id: 'PROD003', name: "Elegant Ceiling Lights", price: 120, img: "images/lights.jfif" },
-        { id: 'PROD004', name: "Cozy Armchair", price: 250, img: "images/chairs.jfif" },
-        { id: 'PROD005', name: "Minimalist Bookshelf", price: 180, img: "images/bookshelf.jfif" },
-        { id: 'PROD006', name: "Modern Coffee Table", price: 150, img: "images/coffeetable.jfif" },
-        { id: 'PROD007', name: "Accent Lamp", price: 75, img: "images/lamp.jfif" },
-        { id: 'PROD008', name: "Abstract Wall Art", price: 90, img: "images/art.jfif" },
-        { id: 'PROD009', name: "Bedroom Dresser", price: 320, img: "images/dresser.avif" },
-        { id: 'PROD010', name: "Plush Area Rug", price: 110, img: "images/rug.jfif" },
-        { id: 'PROD011', name: "Vintage Console Table", price: 280, img: "images/vintagetable.jfif" },
-        { id: 'PROD012', name: "Pendant Lights (Set of 3)", price: 180, img: "images/lightsets3.jfif" },
-        { id: 'PROD013', name: "Scandinavian Dining Chairs (Pair)", price: 200, img: "images/chairsets.jfif" },
-        { id: 'PROD014', name: "Geometric Floor Lamp", price: 95, img: "images/floorlamp.jfif" },
-        { id: 'PROD015', name: "Velvet Storage Bench", price: 160, img: "images/bench.jfif" }
+        { id: 101, name: "Luxury Sofa Set", price: 500, img: "images/luxury_sofa.jfif" },
+        { id: 102, name: "Modern Dining Table", price: 300, img: "images/modern_dining.jfif" },
+        { id: 103, name: "Elegant Ceiling Lights", price: 120, img: "images/lights.jfif" },
+        { id: 104, name: "Cozy Armchair", price: 250, img: "images/chairs.jfif" },
+        { id: 105, name: "Minimalist Bookshelf", price: 180, img: "images/bookshelf.jfif" },
+        { id: 106, name: "Modern Coffee Table", price: 150, img: "images/coffeetable.jfif" },
+        { id: 107, name: "Accent Lamp", price: 75, img: "images/lamp.jfif" },
+        { id: 108, name: "Abstract Wall Art", price: 90, img: "images/art.jfif" },
+        { id: 109, name: "Bedroom Dresser", price: 320, img: "images/dresser.avif" },
+        { id: 110, name: "Plush Area Rug", price: 110, img: "images/rug.jfif" },
+        { id: 111, name: "Vintage Console Table", price: 280, img: "images/vintagetable.jfif" },
+        { id: 112, name: "Pendant Lights (Set of 3)", price: 180, img: "images/lightsets3.jfif" },
+        { id: 113, name: "Scandinavian Dining Chairs (Pair)", price: 200, img: "images/chairsets.jfif" },
+        { id: 114, name: "Geometric Floor Lamp", price: 95, img: "images/floorlamp.jfif" },
+        { id: 115, name: "Velvet Storage Bench", price: 160, img: "images/bench.jfif" }
     ];
 
     // Get the container where products will be displayed
@@ -74,8 +73,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     <img src="${product.img}" class="card-img-top w-full" alt="${product.name}" onerror="this.onerror=null;this.src='https://placehold.co/200x200/cccccc/333333?text=Image+Error';">
                     <div class="card-body p-5">
                         <h5 class="card-title text-xl font-semibold mb-2">${product.name}</h5>
-                        <p class="card-text text-blue-600 text-lg font-bold mb-4">$${product.price.toFixed(2)}</p>
-                        <button class="btn-primary px-5 py-2 rounded-lg" onclick="handleAddToCartClick('${product.id}', '${product.name}', ${product.price})">
+                        <p class="card-text text-blue-600 text-lg font-bold mb-1">$${product.price.toFixed(2)}</p>
+                        <p class="text-xs text-gray-500 mt-1">ID: ${product.id}</p>
+                        <button class="btn-primary px-5 py-2 rounded-lg mt-4" onclick="handleAddToCartClick(${product.id}, '${product.name}', ${product.price})">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
                     </div>
@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function handleAddToCartClick(id, name, price) {
     const product = { id: id, name: name, price: price }; // Recreate product object
     addToCart(product); // Add to local cart
+
     sendAddToCartToGTM(product, 1); // Send to GTM (quantity 1 for single add)
 }
 
@@ -149,7 +150,7 @@ function updateCartDisplay() {
 
             cartItemsElement.innerHTML += `
                 <li class="flex justify-between items-center py-2 px-1 border-b border-dashed border-gray-200 last:border-b-0">
-                    <span class="flex-grow text-left">${item.name} (${item.quantity}) - $${item.price.toFixed(2)}</span>
+                    <span class="flex-grow text-left">${item.name} (ID: ${item.id}) (${item.quantity}) - $${item.price.toFixed(2)}</span>
                     <span class="font-semibold text-right">$${itemTotal.toFixed(2)}</span>
                     <button class="ml-4 text-red-500 hover:text-red-700 transition duration-150" onclick="removeItemFromCart(${index})">
                         <i class="fa fa-trash"></i>
@@ -203,7 +204,7 @@ function checkout() {
     closeCart(); // Close the cart modal
 }
 
-// --- Login Functions ---
+// --- Login Functions (No Age Input here anymore) ---
 /**
  * Displays the login modal.
  */
@@ -218,6 +219,75 @@ function closeLogin() {
     loginModal.classList.add("hidden");
 }
 
+// --- NEW FUNCTION: Handle Contact Form Submission ---
+/**
+ * Captures contact form data and pushes a custom event to the Data Layer.
+ * @param {Event} event - The DOM event object (used to prevent default form submission).
+ */
+function handleContactSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission (page reload)
+
+    // Get values from the form fields
+    const name = document.getElementById('contact-name').value;
+    const email = document.getElementById('contact-email').value;
+    const age = parseInt(document.getElementById('contact-age').value); // Convert to number
+    const productIdInput = document.getElementById('contact-product-id').value; // Get the raw string value
+    const message = document.getElementById('contact-message').value;
+
+    // Basic validation
+    if (!name || !email || !message) {
+        showMessage("Please fill in Name, Email, and Message fields.", 4000);
+        return;
+    }
+    if (isNaN(age) && document.getElementById('contact-age').value !== '') {
+        showMessage("Please enter a valid age (number).", 4000);
+        return;
+    }
+
+    // Convert product ID to number, handling empty/invalid input
+    let productId = null;
+    if (productIdInput !== '') {
+        const parsedProductId = parseInt(productIdInput);
+        if (!isNaN(parsedProductId)) {
+            productId = parsedProductId;
+        } else {
+            showMessage("Please enter a valid numeric Product ID.", 4000);
+            return;
+        }
+    }
+
+
+    console.log("Contact Form Submitted:");
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Age:", age || 'Not provided'); // Display "Not provided" if age is NaN or empty
+    console.log("Product ID:", productId || 'Not provided');
+    console.log("Message:", message);
+
+    // Push data to Google Tag Manager's Data Layer
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        'event': 'contact_form_submission', // Custom event name
+        'form_name': 'Contact Us Form',
+        'contact_details': {
+            'user_name': name,
+            'user_email': email,
+            'user_message': message,
+            'user_age': isNaN(age) ? null : age, // Send null if age is not a valid number
+            'product_id_inquiry': productId // Send null if empty or invalid, otherwise the number
+        }
+    });
+
+    showMessage("Your message has been sent successfully!");
+
+    // Optional: Clear the form after submission
+    document.getElementById('contact-name').value = '';
+    document.getElementById('contact-email').value = '';
+    document.getElementById('contact-age').value = '';
+    document.getElementById('contact-product-id').value = '';
+    document.getElementById('contact-message').value = '';
+}
+
 
 // --- Event Listener: Close Modal when clicking outside ---
 // This allows users to close any open modal by clicking anywhere on the overlay.
@@ -230,7 +300,7 @@ window.onclick = function(event) {
     }
 }
 
-// --- NEW FUNCTION: Send Add to Cart data to Google Tag Manager ---
+// --- Function: Send Add to Cart data to Google Tag Manager ---
 /**
  * Pushes an 'add_to_cart' event to the GTM Data Layer with product details.
  * @param {object} product - The product object { id, name, price }.
@@ -243,17 +313,12 @@ function sendAddToCartToGTM(product, quantity) {
         'event': 'add_to_cart', // Custom event name for GTM Trigger
         'ecommerce': {
             'items': [{
-                'item_id': String(product.id), // Ensure item_id is a string as per GA4 spec
+                'item_id': String(product.id), // IMPORTANT: Convert to string for GA4 specification even if numeric in source
                 'item_name': product.name,
                 'currency': 'USD', // IMPORTANT: Use 'INR' for Indian Rupees, 'USD' for Dollars based on your site's price display
                 'price': product.price,
                 'quantity': quantity
-                // You can add other parameters here if available in your product object:
-                // 'item_brand': 'YourBrand',
-                // 'item_category': 'Furniture',
-                // 'item_variant': 'Blue',
             }],
-            // Optional: Include overall value and currency for the event if applicable
             'value': product.price * quantity,
             'currency': 'USD' // Match the currency with 'items'
         }
