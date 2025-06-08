@@ -286,7 +286,8 @@ function handleContactSubmit(event) {
         user_email: email,
         user_age : age,
         user_product_ID : productId,
-        user_message: message
+        user_message: message,
+        submission_count: 1
     })
     
     console.log('contactform_event sent successfully')
