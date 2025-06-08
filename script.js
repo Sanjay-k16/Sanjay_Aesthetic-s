@@ -168,18 +168,21 @@ function updateCartDisplay() {
                     </button>
                 </li>
             `;
-            gtag('event','add_to_cart',{
-            itemname:item.name,
-            itemid:item.id,
-            itemquantity:item.quantity,
-            itemprice:item.price.toFixed
-        })
-        console.log('event sent succesfully');
+
+            gtag('event', 'add_to_cart', {
+                itemname: item.name,
+                itemid: item.id,
+                itemquantity: item.quantity,
+                itemprice: item.price.toFixed(2)
+            });
         });
-        
+
+        console.log('event sent successfully');
+    }
+
     cartTotalElement.innerText = `Total: $${total.toFixed(2)}`; // Update total price
 }
-}
+
 
 /**
  * Updates the number displayed in the cart icon in the navbar.
@@ -336,26 +339,26 @@ window.onclick = function(event) {
  * @param {object} product - The product object { id, name, price }.
  * @param {number} quantity - The quantity of the product added (usually 1 for this event).
  */
-function sendAddToCartToGTM(product, quantity) {
-    window.dataLayer = window.dataLayer || []; // Ensure dataLayer exists
+// function sendAddToCartToGTM(product, quantity) {
+//     window.dataLayer = window.dataLayer || []; // Ensure dataLayer exists
 
-    dataLayer.push({
-        'event': 'add_to_cart', // Custom event name for GTM Trigger
-        'ecommerce': {
-            'items': [{
-                'item_id': String(product.id), // IMPORTANT: Convert to string for GA4 specification even if numeric in source
-                'item_name': product.name,
-                'currency': 'USD', // IMPORTANT: Use 'INR' for Indian Rupees, 'USD' for Dollars based on your site's price display
-                'price': product.price,
-                'quantity': quantity
-            }],
-            'value': product.price * quantity,
-            'currency': 'USD' // Match the currency with 'items'
-        }
-    });
+//     dataLayer.push({
+//         'event': 'add_to_cart', // Custom event name for GTM Trigger
+//         'ecommerce': {
+//             'items': [{
+//                 'item_id': String(product.id), // IMPORTANT: Convert to string for GA4 specification even if numeric in source
+//                 'item_name': product.name,
+//                 'currency': 'USD', // IMPORTANT: Use 'INR' for Indian Rupees, 'USD' for Dollars based on your site's price display
+//                 'price': product.price,
+//                 'quantity': quantity
+//             }],
+//             'value': product.price * quantity,
+//             'currency': 'USD' // Match the currency with 'items'
+//         }
+//     });
 
-    console.log('DataLayer push for add_to_cart:', dataLayer); // For debugging in browser console
-}
+//     console.log('DataLayer push for add_to_cart:', dataLayer); // For debugging in browser console
+// }
 
 
 // Global variables for Firebase (these are typically provided by the Canvas environment
