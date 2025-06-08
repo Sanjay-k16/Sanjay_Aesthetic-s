@@ -169,7 +169,13 @@ function updateCartDisplay() {
                 </li>
             `;
         });
-    }
+        gtag('event','add_to_cart',{
+            itemname:item.name,
+            itemid:item.id,
+            itemquantity:item.quantity,
+            itemprice:item.price.toFixed
+        })
+        console.log('event sent succesfully');
     cartTotalElement.innerText = `Total: $${total.toFixed(2)}`; // Update total price
 }
 
@@ -282,14 +288,7 @@ function handleContactSubmit(event) {
         user_product_ID : productId,
         user_message: message
     })
-     gtag('event' , 'add_to_cart' , {
-        user_name: name,
-        user_email: email,
-        user_age : age,
-        user_product_ID : productId,
-        user_message: message
-    })
-
+    
     console.log('contactform_event sent successfully')
 
     // Push data to Google Tag Manager's Data Layer
