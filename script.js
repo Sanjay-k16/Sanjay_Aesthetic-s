@@ -168,17 +168,19 @@ function updateCartDisplay() {
                     </button>
                 </li>
             `;
-        });
-        gtag('event','add_to_cart',{
+            gtag('event','add_to_cart',{
             itemname:item.name,
             itemid:item.id,
             itemquantity:item.quantity,
             itemprice:item.price.toFixed
         })
         console.log('event sent succesfully');
+        });
+        
     cartTotalElement.innerText = `Total: $${total.toFixed(2)}`; // Update total price
 }
 }
+
 /**
  * Updates the number displayed in the cart icon in the navbar.
  */
