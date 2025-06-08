@@ -103,7 +103,13 @@ function handleAddToCartClick(id, name, price) {
     const product = { id: id, name: name, price: price }; // Recreate product object
     addToCart(product); // Add to local cart
 
-    sendAddToCartToGTM(product, 1); // Send to GTM (quantity 1 for single add)
+     gtag('event', 'add_to_cart', {
+                itemname: name,
+                itemid: id,
+                itemprice: price
+            });
+
+    // sendAddToCartToGTM(product, 1); 
 }
 
 
@@ -169,15 +175,10 @@ function updateCartDisplay() {
                 </li>
             `;
 
-            gtag('event', 'add_to_cart', {
-                itemname: item.name,
-                itemid: item.id,
-                itemquantity: item.quantity,
-                itemprice: item.price.toFixed(2)
-            });
+           
         });
 
-        console.log('event sent successfully');
+        
     }
 
     cartTotalElement.innerText = `Total: $${total.toFixed(2)}`; // Update total price
