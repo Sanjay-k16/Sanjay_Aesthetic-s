@@ -178,7 +178,7 @@ function updateCartDisplay() {
         console.log('event sent succesfully');
     cartTotalElement.innerText = `Total: $${total.toFixed(2)}`; // Update total price
 }
-
+}
 /**
  * Updates the number displayed in the cart icon in the navbar.
  */
