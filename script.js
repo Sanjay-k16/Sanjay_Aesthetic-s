@@ -7,54 +7,25 @@ const messageText = document.getElementById("custom-message-text");
 
 // Get references to the modal elements
 const cartModal = document.getElementById("cart-modal");
-const loginModal = document.getElementById("login-modal"); // Keep login modal reference if it's still in HTML
+const loginModal = document.getElementById("login-modal");
 
-// code for form submission
-// let Nameval = document.getElementById('contact-name')
-// let email = document.getElementById('contact-email')
-// let age = document.getElementById('contact-age')
-// let productid = document.getElementById('contact-product-id')
-// let message = document.getElementById('contact-message')
-
-// document.getElementById('contactform').addEventListener('submit' , (e)=>{
-//     e.preventDefault()
-//     console.log(Nameval.value , email.value , age.value , productid.value , message.value)
-// })
 // --- Helper Function: Show Custom Message (Notification) ---
-/**
- * Displays a temporary message at the top of the screen.
- * This function uses direct style manipulation for maximum reliability
- * in triggering CSS transitions.
- * @param {string} message - The text message to display.
- * @param {number} duration - How long the message should be visible in milliseconds (default: 3000ms = 3 seconds).
- */
 function showMessage(message, duration = 3000) {
-    messageText.textContent = message; // Set the message text
-
-    // Set display to flex FIRST to make the element renderable
+    messageText.textContent = message;
     messageBox.style.display = 'flex';
-
     setTimeout(() => {
-        messageBox.style.opacity = '1'; // Trigger fade-in
-    }, 10); // Minimal delay
-
-    // Set a timeout to start fading out after the main duration
+        messageBox.style.opacity = '1';
+    }, 10);
     setTimeout(() => {
-        messageBox.style.opacity = '0'; // Trigger fade-out
-
-        // Set another timeout to completely hide the box after the fade-out transition finishes
+        messageBox.style.opacity = '0';
         setTimeout(() => {
-            messageBox.style.display = 'none'; // Fully hide the box
-        }, 300); // This delay should match the CSS 'transition-opacity' duration
+            messageBox.style.display = 'none';
+        }, 300);
     }, duration);
 }
 
-
 // --- Event Listener: When the whole page is loaded ---
 document.addEventListener("DOMContentLoaded", function() {
-    // --- Product Data: A list of all available products with details and image URLs ---
-    // IMPORTANT: Prices are now numbers for calculation!
-    // IDs are now numeric as requested
     const products = [
         { id: 101, name: "Luxury Sofa Set", price: 500, img: "images/luxury_sofa.jfif" },
         { id: 102, name: "Modern Dining Table", price: 300, img: "images/modern_dining.jfif" },
@@ -73,10 +44,8 @@ document.addEventListener("DOMContentLoaded", function() {
         { id: 115, name: "Velvet Storage Bench", price: 160, img: "images/bench.jfif" }
     ];
 
-    // Get the container where products will be displayed
     let productContainer = document.getElementById("product-list");
 
-    // Loop through each product and create its HTML card
     products.forEach(product => {
         let productCard = `
             <div class="col-md-4 flex justify-center">
@@ -92,69 +61,64 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                 </div>
             </div>`;
-        productContainer.innerHTML += productCard; // Add the created card to the display area
+        productContainer.innerHTML += productCard;
     });
 });
 
 // --- Cart Functions ---
 
-// NEW: Wrapper function for the onclick event in HTML
 function handleAddToCartClick(id, name, price) {
-    const product = { id: id, name: name, price: price }; // Recreate product object
-    addToCart(product); // Add to local cart
+    const product = { id: id, name: name, price: price };
+    addToCart(product);
 
-     gtag('event', 'add_to_cart', {
-                itemname: name,
-                itemid: id,
-                itemprice: price
-            });
+    // GTM DataLayer push for 'add_to_cart' event (as you had it)
+    gtag('event', 'add_to_cart', {
+        itemname: name,
+        itemid: id,
+        itemprice: price
+    });
 
-    // sendAddToCartToGTM(product, 1); 
+    // NEW: Adobe Analytics DataLayer push for 'addToCart' event
+    // This will be read by your 'E-commerce - Add to Cart' Rule in Launch.
+    window.dataLayer.push({
+        'event': 'addToCart', // This custom event name will trigger your Launch rule
+        'cartProduct': {       // This object holds data for the specific product added
+            id: id,
+            name: name,
+            price: price,
+            quantity: 1 // Assuming 1 for add to cart
+        }
+    });
+    console.log('Adobe DataLayer push for addToCart:', window.dataLayer);
 }
 
-
-/**
- * Adds a selected product to the shopping cart.
- * If the item is already in the cart, it increments the quantity.
- * @param {object} product - The product object { id, name, price, img }.
- */
 function addToCart(product) {
-    // Check if the item already exists in the cart
     const existingItemIndex = cart.findIndex(item => item.id === product.id);
 
     if (existingItemIndex > -1) {
-        // Item exists, increment quantity
         cart[existingItemIndex].quantity++;
         showMessage(`Added another ${product.name} to your cart!`);
     } else {
-        // Item does not exist, add new item with quantity 1
         cart.push({ ...product, quantity: 1 });
         showMessage(`${product.name} has been added to your cart!`);
     }
 
-    updateCartCount(); // Update the cart count in the navbar
+    updateCartCount();
 }
 
-/**
- * Removes an item from the cart by its index.
- * @param {number} index - The index of the item in the cart array to remove.
- */
 function removeItemFromCart(index) {
     if (index >= 0 && index < cart.length) {
-        const removedItem = cart.splice(index, 1); // Remove 1 item at the given index
+        const removedItem = cart.splice(index, 1);
         showMessage(`${removedItem[0].name} removed from cart.`);
-        updateCartDisplay(); // Refresh the cart modal
-        updateCartCount(); // Update the cart count in the navbar
+        updateCartDisplay();
+        updateCartCount();
     }
 }
 
-/**
- * Updates the cart item display in the modal and calculates total.
- */
 function updateCartDisplay() {
     let cartItemsElement = document.getElementById("cart-items");
     let cartTotalElement = document.getElementById("cart-total");
-    cartItemsElement.innerHTML = ""; // Clear existing items
+    cartItemsElement.innerHTML = "";
 
     let total = 0;
 
@@ -163,7 +127,7 @@ function updateCartDisplay() {
     } else {
         cart.forEach((item, index) => {
             const itemTotal = item.price * item.quantity;
-            total += itemTotal; // Add to overall total
+            total += itemTotal;
 
             cartItemsElement.innerHTML += `
                 <li class="flex justify-between items-center py-2 px-1 border-b border-dashed border-gray-200 last:border-b-0">
@@ -174,90 +138,78 @@ function updateCartDisplay() {
                     </button>
                 </li>
             `;
-
-           
         });
-
-        
     }
 
-    cartTotalElement.innerText = `Total: $${total.toFixed(2)}`; // Update total price
+    cartTotalElement.innerText = `Total: $${total.toFixed(2)}`;
 }
 
-
-/**
- * Updates the number displayed in the cart icon in the navbar.
- */
 function updateCartCount() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     document.getElementById("cart-count").innerText = totalItems;
 }
 
-
-/**
- * Displays the shopping cart modal.
- */
 function showCart() {
-    updateCartDisplay(); // Populate cart items before showing modal
-    cartModal.classList.remove("hidden"); // Make the cart modal visible
+    updateCartDisplay();
+    cartModal.classList.remove("hidden");
 }
 
-/**
- * Closes the shopping cart modal.
- */
 function closeCart() {
-    cartModal.classList.add("hidden"); // Hide the cart modal
+    cartModal.classList.add("hidden");
 }
 
-/**
- * Handles the checkout process.
- * Displays a thank you message, clears the cart, and closes the modal.
- */
 function checkout() {
     if (cart.length === 0) {
         showMessage("Your cart is empty. Please add items before checking out.");
-        return; // Stop the function if cart is empty
+        return;
     }
-    // Optional: send 'begin_checkout' or 'purchase' event here
-    // sendCheckoutEventToGTM(cart); // Assuming you'd create this function
+    
+    // NEW: Adobe Analytics DataLayer push for 'purchase' event
+    // This will be read by your 'E-commerce - Purchase' Rule in Launch.
+    // Assuming a simple order ID for this example; in real life, this comes from your backend.
+    const orderId = 'ORDER-' + Math.floor(Math.random() * 1000000); // Simple random ID for demo
+    const orderRevenue = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const orderProducts = cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+    }));
 
-    showMessage("Thank you for your purchase! Your order has been placed."); // Show thank you message
-    cart = []; // Clear all items from the cart array
-    updateCartCount(); // Reset the cart count to 0
-    closeCart(); // Close the cart modal
+    window.dataLayer.push({
+        'event': 'purchase', // This custom event name will trigger your Launch rule
+        'order': {            // This object holds all purchase details
+            id: orderId,
+            revenue: orderRevenue,
+            currency: 'USD', // IMPORTANT: Adjust to 'INR' or your actual currency
+            products: orderProducts
+        }
+    });
+    console.log('Adobe DataLayer push for purchase:', window.dataLayer);
+
+    showMessage("Thank you for your purchase! Your order has been placed.");
+    cart = [];
+    updateCartCount();
+    closeCart();
 }
 
-// --- Login Functions (No Age Input here anymore) ---
-/**
- * Displays the login modal.
- */
 function showLogin() {
     loginModal.classList.remove("hidden");
 }
 
-/**
- * Closes the login modal.
- */
 function closeLogin() {
     loginModal.classList.add("hidden");
 }
 
-// --- NEW FUNCTION: Handle Contact Form Submission ---
-/**
- * Captures contact form data and pushes a custom event to the Data Layer.
- * @param {Event} event - The DOM event object (used to prevent default form submission).
- */
 function handleContactSubmit(event) {
-    event.preventDefault(); // Prevent the default form submission (page reload)
+    event.preventDefault();
 
-    // Get values from the form fields
     const name = document.getElementById('contact-name').value;
     const email = document.getElementById('contact-email').value;
-    const age = parseInt(document.getElementById('contact-age').value); // Convert to number
-    const productIdInput = document.getElementById('contact-product-id').value; // Get the raw string value
+    const age = parseInt(document.getElementById('contact-age').value);
+    const productIdInput = document.getElementById('contact-product-id').value;
     const message = document.getElementById('contact-message').value;
 
-    // Basic validation
     if (!name || !email || !message) {
         showMessage("Please fill in Name, Email, and Message fields.", 4000);
         return;
@@ -267,7 +219,6 @@ function handleContactSubmit(event) {
         return;
     }
 
-    // Convert product ID to number, handling empty/invalid input
     let productId = null;
     if (productIdInput !== '') {
         const parsedProductId = parseInt(productIdInput);
@@ -279,11 +230,10 @@ function handleContactSubmit(event) {
         }
     }
 
-
     console.log("Contact Form Submitted:");
     console.log("Name:", name);
     console.log("Email:", email);
-    console.log("Age:", age || 'Not provided'); // Display "Not provided" if age is NaN or empty
+    console.log("Age:", age || 'Not provided');
     console.log("Product ID:", productId || 'Not provided');
     console.log("Message:", message);
 
@@ -295,26 +245,24 @@ function handleContactSubmit(event) {
         user_message: message,
         submission_count: 1
     })
-    
     console.log('contactform_event sent successfully')
 
-    // Push data to Google Tag Manager's Data Layer
-    window.dataLayer = window.dataLayer || [];
-    dataLayer.push({
-        'event': 'contact_form_submission', // Custom event name
+    // DataLayer push for Google Tag Manager's 'contact_form_submission' event (as you had it)
+    // Adobe Analytics Data Elements can be configured to read from this structure.
+    window.dataLayer.push({
+        'event': 'contact_form_submission',
         'form_name': 'Contact Us Form',
         'contact_details': {
             'user_name': name,
             'user_email': email,
             'user_message': message,
-            'user_age': isNaN(age) ? null : age, // Send null if age is not a valid number
-            'product_id_inquiry': productId // Send null if empty or invalid, otherwise the number
+            'user_age': isNaN(age) ? null : age,
+            'product_id_inquiry': productId
         }
     });
 
     showMessage("Your message has been sent successfully!");
 
-    // Optional: Clear the form after submission
     document.getElementById('contact-name').value = '';
     document.getElementById('contact-email').value = '';
     document.getElementById('contact-age').value = '';
@@ -322,45 +270,14 @@ function handleContactSubmit(event) {
     document.getElementById('contact-message').value = '';
 }
 
-
-// --- Event Listener: Close Modal when clicking outside ---
-// This allows users to close any open modal by clicking anywhere on the overlay.
 window.onclick = function(event) {
-    if (event.target == cartModal) { // If the click was on the cart modal background itself
+    if (event.target == cartModal) {
         closeCart();
     }
-    if (event.target == loginModal) { // If the click was on the login modal background itself
+    if (event.target == loginModal) {
         closeLogin();
     }
 }
-
-// --- Function: Send Add to Cart data to Google Tag Manager ---
-/**
- * Pushes an 'add_to_cart' event to the GTM Data Layer with product details.
- * @param {object} product - The product object { id, name, price }.
- * @param {number} quantity - The quantity of the product added (usually 1 for this event).
- */
-// function sendAddToCartToGTM(product, quantity) {
-//     window.dataLayer = window.dataLayer || []; // Ensure dataLayer exists
-
-//     dataLayer.push({
-//         'event': 'add_to_cart', // Custom event name for GTM Trigger
-//         'ecommerce': {
-//             'items': [{
-//                 'item_id': String(product.id), // IMPORTANT: Convert to string for GA4 specification even if numeric in source
-//                 'item_name': product.name,
-//                 'currency': 'USD', // IMPORTANT: Use 'INR' for Indian Rupees, 'USD' for Dollars based on your site's price display
-//                 'price': product.price,
-//                 'quantity': quantity
-//             }],
-//             'value': product.price * quantity,
-//             'currency': 'USD' // Match the currency with 'items'
-//         }
-//     });
-
-//     console.log('DataLayer push for add_to_cart:', dataLayer); // For debugging in browser console
-// }
-
 
 // Global variables for Firebase (these are typically provided by the Canvas environment
 // and are included here for completeness, though not not used in this specific e-commerce logic).
