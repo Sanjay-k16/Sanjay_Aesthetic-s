@@ -4,14 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanjay's Aesthetic</title>
-    <script src="https://assets.adobedtm.com/236ca7d75265/dc12574153d3/launch-e220d38f04b1-development.min.js" async></script>
-     <!-- Google Tag Manager -->
+
+    <script>
+        // Initialize or augment the existing Google's dataLayer for Adobe's use
+        window.dataLayer = window.dataLayer || [];
+        // Define page-level data for Adobe Analytics.
+        // For a single-page site like this, this will typically represent the 'Home Page'.
+        // This will be read by your 'DL - Page Name', 'DL - Page Type' Data Elements in Launch.
+        window.dataLayer.push({
+            'page': {
+                'name': 'Home Page', // Or dynamically set based on sections if it's an SPA
+                'type': 'Homepage',
+                'url': window.location.href
+            }
+        });
+    </script>
+    
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-W4WMTXH8');</script>
-    <!-- End Google Tag Manager -->
+    <script src="https://assets.adobedtm.com/236ca7d75265/dc12574153d3/launch-e220d38f04b1-development.min.js" async></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -19,21 +33,9 @@
 
     <link rel="icon" href="images/icon2.jfif" type="image/png">
 </head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4WV36CJ0TR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-4WV36CJ0TR');
-</script>
 <body class="font-sans antialiased text-gray-800 bg-gray-100">
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W4WMTXH8"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-   
     <div id="custom-message-box" class="fixed top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300 ease-in-out">
         <span id="custom-message-text"></span>
     </div>
@@ -44,10 +46,9 @@
             <a href="#product-list-section" class="nav-link">
                 <i class="fas fa-boxes"></i> Products
             </a>
-                <a href="#about-us-section" class="nav-link" onclick="dataLayer.push({'event': 'link_click', 'link_url': this.href})">
-            <i class="fas fa-info-circle"></i> About Us
-        </a>
-
+            <a href="#about-us-section" class="nav-link" onclick="dataLayer.push({'event': 'link_click', 'link_url': this.href})">
+                <i class="fas fa-info-circle"></i> About Us
+            </a>
             <a href="#contact-section" class="nav-link">
                 <i class="fas fa-headset"></i> Contact Us
             </a>
@@ -156,6 +157,13 @@
         </div>
     </div>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WV36CJ0TR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4WV36CJ0TR');
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
